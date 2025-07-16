@@ -1,0 +1,16 @@
+{
+  "name": "parrotita",
+  "version": "0.0.1",
+  "description": "JSON validator based on Json Schema but faster and more practical",
+  "main": "index.js",
+  "type": "module",
+  "keywords": [
+    "json",
+    "schema",
+    "validator",
+    "json-schema",
+    "fast"
+  ],
+  "author": "FedYou",
+  "license": "MIT"
+}
