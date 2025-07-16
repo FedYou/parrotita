@@ -9,6 +9,11 @@ const _typeof = {
   object: isObject
 }
 
+function isTypeof(type, value) {
+  if (isUndefined(_typeof[type])) return undefined
+  return _typeof[type](value)
+}
+
 function isString(value) {
   return typeof value === 'string'
 }
@@ -49,6 +54,7 @@ function isNull(value) {
 }
 
 export {
+  isTypeof,
   isString,
   isBoolean,
   isNumber,
