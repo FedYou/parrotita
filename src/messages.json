@@ -1,0 +1,21 @@
+{
+  "required": "Missing required property at \"$path\"",
+  "typeof": "Invalid type at \"$path\". Expected \"$type\"",
+  "enum": "Invalid value at \"$path\". Allowed values: $enums",
+  "maxItems": "Too many items in array at \"$path\". Maximum: $maxItems",
+  "minItems": "Not enough items in array at \"$path\". Minimum: $minItems",
+  "maxLength": "String at \"$path\" is too long. Maximum length: $maxLength characters",
+  "minLength": "String at \"$path\" is too short. Minimum length: $minLength characters",
+  "pattern": "String at \"$path\" does not match the required pattern: \"$pattern\"",
+  "unexpectedKey": "Unexpected property \"$unexpectedKey\" found at \"$path\"",
+  "minimum": "Number at \"$path\" is too small. Minimum allowed: $minimum",
+  "maximum": "Number at \"$path\" is too large. Maximum allowed: $maximum",
+  "exclusiveMinimum": "Number at \"$path\" must be greater than $exclusiveMinimum",
+  "exclusiveMaximum": "Number at \"$path\" must be less than $exclusiveMaximum",
+
+  "_invalidType": "Invalid schema type \"$type\" at \"$path\". Allowed types: $allowedTypes.",
+  "_requireType": "Missing required \"type\" field in the schema at \"$path\"",
+  "_properties": "The \"properties\" field must be an object in the schema at \"$path\"",
+  "_MaxMin": "The \"$type\" field must be a number in the schema at \"$path\"",
+  "_MinMinimum": "The \"$type\" field in the schema at \"$path\" must be greater than 0"
+}
