@@ -81,4 +81,4 @@ function dotSplit(path) {
   return keys
 }
 
-export { dotAccess }
+export { dotAccess, dotSplit }
