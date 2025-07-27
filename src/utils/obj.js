@@ -1,3 +1,5 @@
+const DOT_PATH_REGEX = /^(\[\s*[^\[\]]+\s*\]|\w+)((\.(\w+)|\.\[\s*[^\[\]]+\s*\]|\[\s*[^\[\]]+\s*\]))*$/
+
 function dotAccess(obj, path) {
   // Si no existe el valor sera undifined y no causara error
   return dotSplit(path).reduce((acc, path) => {
@@ -14,6 +16,10 @@ function dotAccess(obj, path) {
 // obj.path[property][sub]
 
 function dotSplit(path) {
+  if (!DOT_PATH_REGEX.test(path)) {
+    throw new Error(`Invalid path format ${path}`)
+  }
+
   const keys = []
   const split = path.split('')
 
