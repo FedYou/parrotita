@@ -1,3 +1,5 @@
+import { isInteger } from './typeof'
+
 const DOT_PATH_REGEX = /^(\[\s*[^\[\]]+\s*\]|\w+)((\.(\w+)|\.\[\s*[^\[\]]+\s*\]|\[\s*[^\[\]]+\s*\]))*$/
 
 function dotAccess(obj, path) {
@@ -84,4 +86,18 @@ function dotSplit(path) {
   return keys
 }
 
-export { dotAccess, dotSplit }
+function serializeDotPath(path) {
+  console.log(path)
+  return path.reduce((acc, value) => {
+    if (isInteger(value)) {
+      return `${acc}[${value}]`
+    }
+    if (value.includes('.')) {
+      return `${acc}{${value}}`
+    }
+
+    return acc === '' ? value : `${acc}.${value}`
+  }, '')
+}
+
+export { dotAccess, dotSplit, serializeDotPath }
