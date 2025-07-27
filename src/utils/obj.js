@@ -87,13 +87,12 @@ function dotSplit(path) {
 }
 
 function serializeDotPath(path) {
-  console.log(path)
   return path.reduce((acc, value) => {
     if (isInteger(value)) {
-      return `${acc}[${value}]`
+      return `${acc}/#${value}`
     }
     if (value.includes('.')) {
-      return `${acc}{${value}}`
+      return `${acc}[${value}]`
     }
 
     return acc === '' ? value : `${acc}.${value}`
