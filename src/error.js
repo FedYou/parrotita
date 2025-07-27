@@ -1,11 +1,18 @@
 import messages from './messages.json' assert { type: 'json' }
+import { serializeDotPath } from './utils/obj.js'
 import _typeof, { isString } from './utils/typeof.js'
 
 function join(message, values = {}) {
   let result = message
 
   for (const key in values) {
-    result = result.replace(`$${key}`, values[key])
+    let value
+    if (key === 'path') {
+      value = serializeDotPath(values[key])
+    } else {
+      value = values[key]
+    }
+    result = result.replace(`$${key}`, value)
   }
 
   return result
@@ -15,20 +22,18 @@ function returnTypeValue(targetSchema) {
   return isString(targetSchema) ? targetSchema : targetSchema.type
 }
 
-function resolveUnexpectedKey(string) {
-  if (string.includes('.')) {
-    const split = string.split('.'),
-      length = split.length,
-      unexpectedKey = split[length - 1]
-
+function resolveUnexpectedKey(array) {
+  if (array.length > 1) {
+    const unexpectedKey = array[array.length - 1]
+    array.pop()
     return {
-      path: string.replace(`.${unexpectedKey}`, ''),
+      path: serializeDotPath(array),
       unexpectedKey: unexpectedKey
     }
   }
   return {
     path: '(root)',
-    unexpectedKey: string
+    unexpectedKey: array
   }
 }
 

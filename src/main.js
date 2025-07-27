@@ -113,14 +113,14 @@ class Validator {
     }
   }
 
-  #valid({ targetSchema, input, path = '' }) {
+  #valid({ targetSchema, input, path = [] }) {
     if (isString(targetSchema)) {
       this.#validTypeOf({ value: input, type: targetSchema, path, targetSchema })
       return
     }
     if (this.#validEnum({ type: targetSchema, input, path })) return
 
-    this.#validSchemaObject({ targetSchema: targetSchema, input: input, path })
+    this.#validSchemaObject({ targetSchema: targetSchema, input, path })
   }
 
   #validSchemaObject({ targetSchema, input, path }) {
@@ -170,7 +170,7 @@ class Validator {
         this.#valid({
           targetSchema: targetSchema.items[index],
           input: item,
-          path: `${path}[${index}]`
+          path: path.concat(index)
         })
       })
     } else if (isString(targetSchema.items)) {
@@ -178,7 +178,7 @@ class Validator {
         this.#valid({
           targetSchema: targetSchema.items,
           input: item,
-          path: `${path}[${index}]`
+          path: path.concat(index)
         })
       })
     }
@@ -187,17 +187,17 @@ class Validator {
   #validTypeObject({ targetSchema, input, path }) {
     if (targetSchema.type !== 'object') return
 
-    this.#validKeys({ targetSchema, input, path })
-
     if (isObject(targetSchema.properties)) {
       for (const key in targetSchema.properties) {
         this.#valid({
           targetSchema: targetSchema.properties[key],
           input: input[key],
-          path: `${path ?? `${path}.`}${key}`
+          path: path.concat(key)
         })
       }
     }
+
+    this.#validKeys({ targetSchema, input, path })
   }
 
   #validTypeNumber({ targetSchema, input, path }) {
@@ -255,7 +255,7 @@ class Validator {
     for (const key in input) {
       if (!keysSet.has(key)) {
         // La propiedad ${key} es desconocida en ${path}
-        throwDataError({ type: 'unexpectedKey', path, targetSchema })
+        throwDataError({ type: 'unexpectedKey', path: path.concat(key), targetSchema })
       }
     }
   }
