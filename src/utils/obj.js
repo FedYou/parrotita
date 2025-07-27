@@ -1,11 +1,8 @@
 function dotAccess(obj, path) {
-  if (path.includes('.')) {
-    // Si no existe el valor sera undifined y no causara error
-    return dotSplit(path).reduce((acc, path) => {
-      return acc?.[path]
-    }, obj)
-  }
-  return obj[path]
+  // Si no existe el valor sera undifined y no causara error
+  return dotSplit(path).reduce((acc, path) => {
+    return acc?.[path]
+  }, obj)
 }
 
 // syntax
