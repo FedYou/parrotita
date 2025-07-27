@@ -1,4 +1,5 @@
 import { isInteger } from './typeof'
+import { throwSchemaError } from '../error'
 
 const DOT_PATH_REGEX = /^(\[\s*[^\[\]]+\s*\]|\w+)((\.(\w+)|\.\[\s*[^\[\]]+\s*\]|\[\s*[^\[\]]+\s*\]))*$/
 
@@ -19,7 +20,7 @@ function dotAccess(obj, path) {
 
 function dotSplit(path) {
   if (!DOT_PATH_REGEX.test(path)) {
-    throw new Error(`Invalid path format ${path}`)
+    throwSchemaError({ type: 'invalidPath', path })
   }
 
   const keys = []

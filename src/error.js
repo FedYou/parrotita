@@ -67,6 +67,9 @@ class SchemaFactory {
   static minLengthMinimum({ path }) {
     return join(messages._MinMinimum, { type: 'minLength', path })
   }
+  static invalidPath({ path }) {
+    return join(messages._invalidPath, { invalidPath: path })
+  }
 }
 
 class DataFactory {
@@ -145,7 +148,7 @@ function throwError({ schemaIssue = false, targetSchema = undefined, type, path 
 /**
  * @param {Object} options
  * @param {*} [options.targetSchema]
- * @param {"typeof" | "requireType" | "properties" | "maxLength" | "minLength" | "maxItems" | "minItems" | "minItemsMinimum" | "minLengthMinimum" } [options.type]
+ * @param {"typeof" | "requireType" | "properties" | "maxLength" | "minLength" | "maxItems" | "minItems" | "minItemsMinimum" | "minLengthMinimum" | "invalidPath" } [options.type]
  * @param {string} [options.path]
  */
 
