@@ -1,5 +1,5 @@
-import { isInteger } from './typeof'
-import { throwSchemaError } from '../error'
+import { isArray, isInteger } from './typeof.js'
+import { throwSchemaError } from '../error.js'
 
 const DOT_PATH_REGEX = /^(\[\s*[^\[\]]+\s*\]|\w+)((\.(\w+)|\.\[\s*[^\[\]]+\s*\]|\[\s*[^\[\]]+\s*\]))*$/
 
@@ -90,10 +90,10 @@ function dotSplit(path) {
 function serializeDotPath(path) {
   return path.reduce((acc, value) => {
     if (isInteger(value)) {
-      return `${acc}/#${value}`
+      return `${acc}[${value}]`
     }
     if (value.includes('.')) {
-      return `${acc}[${value}]`
+      return `${acc}["${value}"]`
     }
 
     return acc === '' ? value : `${acc}.${value}`
