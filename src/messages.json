@@ -18,5 +18,6 @@
   "_properties": "The \"properties\" field must be an object in the schema at \"$path\"",
   "_MaxMin": "The \"$type\" field must be a number in the schema at \"$path\"",
   "_MinMinimum": "The \"$type\" field in the schema at \"$path\" must be greater than 0",
-  "_invalidPath": "Invalid path format >> $invalidPath <<"
+  "_invalidPath": "Invalid path format >> $invalidPath <<",
+  "_nestedEnum": "Invalid nested enum at \"$path\". Enums cannot contain other enum types"
 }

@@ -1,6 +1,6 @@
 import messages from './messages.json' assert { type: 'json' }
 import { serializeDotPath } from './utils/obj.js'
-import _typeof, { isString } from './utils/typeof.js'
+import _typeof, { isString, isObject, isArray } from './utils/typeof.js'
 
 function join(message, values = {}) {
   let result = message
@@ -20,6 +20,17 @@ function join(message, values = {}) {
 
 function returnTypeValue(targetSchema) {
   return isString(targetSchema) ? targetSchema : targetSchema.type
+}
+
+function serializeTypeEnum(targetSchema) {
+  return targetSchema
+    .map((type) => {
+      if (isObject(type)) {
+        return `<schema: ${type.type}>`
+      }
+      return type
+    })
+    .join(', ')
 }
 
 function resolveUnexpectedKey(array) {
@@ -70,6 +81,9 @@ class SchemaFactory {
   static invalidPath({ path }) {
     return join(messages._invalidPath, { invalidPath: path })
   }
+  static nestedEnum({ path }) {
+    return join(messages._nestedEnum, { path })
+  }
 }
 
 class DataFactory {
@@ -81,8 +95,7 @@ class DataFactory {
     return join(messages.typeof, { path, type })
   }
   static enum({ targetSchema, path }) {
-    const enums = returnTypeValue(targetSchema)
-    return join(messages.enum, { path, enums: enums.join(', ') })
+    return join(messages.enum, { path, enums: serializeTypeEnum(targetSchema) })
   }
   static maxItems({ targetSchema: { maxItems }, path }) {
     return join(messages.maxItems, { path, maxItems })
@@ -148,7 +161,7 @@ function throwError({ schemaIssue = false, targetSchema = undefined, type, path 
 /**
  * @param {Object} options
  * @param {*} [options.targetSchema]
- * @param {"typeof" | "requireType" | "properties" | "maxLength" | "minLength" | "maxItems" | "minItems" | "minItemsMinimum" | "minLengthMinimum" | "invalidPath" } [options.type]
+ * @param {"typeof" | "requireType" | "properties" | "maxLength" | "minLength" | "maxItems" | "minItems" | "minItemsMinimum" | "minLengthMinimum" | "invalidPath" | "nestedEnum" } [options.type]
  * @param {string} [options.path]
  */
 

@@ -113,17 +113,17 @@ class Validator {
     }
   }
 
-  #valid({ targetSchema, input, path = [] }) {
+  #valid({ targetSchema, input, path = [], inEnum = false }) {
     if (isString(targetSchema)) {
       this.#validTypeOf({ value: input, type: targetSchema, path, targetSchema })
       return
     }
-    if (this.#validEnum({ type: targetSchema, input, path })) return
+    if (this.#validEnum({ type: targetSchema, input, path, inEnum })) return
 
-    this.#validSchemaObject({ targetSchema: targetSchema, input, path })
+    this.#validSchemaObject({ targetSchema: targetSchema, input, path, inEnum })
   }
 
-  #validSchemaObject({ targetSchema, input, path }) {
+  #validSchemaObject({ targetSchema, input, path, inEnum }) {
     if (!isObject(targetSchema)) return
     if ('properties' in targetSchema && !isObject(targetSchema.properties)) {
       // <schema> El tipo de properties tiene que ser un objeto para la validar ${path}
@@ -141,7 +141,7 @@ class Validator {
 
     if (input === undefined) return
 
-    if (this.#validEnum({ type: targetSchema.type, input, path })) return
+    if (this.#validEnum({ type: targetSchema.type, input, path, inEnum })) return
     this.#validTypeOf({
       type: targetSchema.type,
       value: input,
@@ -237,13 +237,46 @@ class Validator {
     this.#validMaxMin({ targetSchema, input, path, id: 'Length' })
   }
 
-  #validEnum({ type, input, path }) {
-    if (isArray(type) && type.length > 0) {
-      if (!new Set(type).has(input)) {
-        // <data> Valor invalido en ${path} solo se permiten: ${type.join(', ')}
-        throwDataError({ type: 'enum', path, targetSchema })
+  #validEnum({ type, input, path, inEnum }) {
+    if (!isArray(type)) return
+
+    if (inEnum || (inEnum && type.length === 0)) {
+      throwSchemaError({ type: 'nestedEnum', path })
+    }
+
+    if (type.length > 0) {
+      let valid = false
+
+      if (new Set(type).has(input)) {
+        valid = true
       }
-      return !0
+
+      if (!valid) {
+        let index = -1
+        for (const _type of type) {
+          index++
+          if (valid) break
+          if (isArray(_type)) {
+            throwSchemaError({ type: 'nestedEnum', path })
+          }
+          if (!isObject(_type)) continue
+
+          try {
+            this.#valid({ targetSchema: _type, input, path: path.concat(index), inEnum: true })
+
+            valid = true
+          } catch (error) {
+            if (error.schemaIssue) {
+              throw error
+            }
+          }
+        }
+      }
+
+      if (valid) return !0
+
+      // <data> Valor invalido en ${path} solo se permiten: ${type.join(', ')}
+      throwDataError({ type: 'enum', path, targetSchema: type })
     }
   }
 
