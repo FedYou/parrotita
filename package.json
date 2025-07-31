@@ -2,8 +2,14 @@
   "name": "parrotita",
   "version": "0.0.1",
   "description": "JSON validator based on Json Schema but faster and more practical",
-  "main": "src/main.js",
+  "exports": {
+    "import": "./lib/esm.js",
+    "require": "./lib/cjs.js"
+  },
   "type": "module",
+  "scripts": {
+    "build": "node build.js"
+  },
   "keywords": [
     "json",
     "schema",
@@ -12,5 +18,9 @@
     "fast"
   ],
   "author": "FedYou",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.25.8",
+    "youfile": "^1.0.11"
+  }
 }
