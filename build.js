@@ -12,7 +12,7 @@ function buildScript(format) {
     bundle: true,
     minify: true,
     target: 'es2015',
-    outfile: `${_dist}/lib/${format}.js`,
+    outfile: `${_dist}/lib/${format}.${format === 'cjs' ? 'cjs' : 'js'}`,
     platform: 'neutral',
     format
   })

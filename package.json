@@ -4,7 +4,7 @@
   "description": "JSON validator based on Json Schema but faster and more practical",
   "exports": {
     "import": "./lib/esm.js",
-    "require": "./lib/cjs.js"
+    "require": "./lib/cjs.cjs"
   },
   "types": "./types/main.d.ts",
   "type": "module",
