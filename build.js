@@ -4,7 +4,7 @@ import { join } from 'path'
 
 const _dist = 'dist'
 const _package = 'package.json'
-const _externals = ['LICENSE', 'README.md']
+const _externals = ['LICENSE', 'README.md', 'types']
 
 function buildScript(format) {
   esbuild.build({
