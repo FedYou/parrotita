@@ -26,7 +26,7 @@ class UseIf {
 
   #evaluateIfBlock(ifRules) {
     if (!ifRules.value || !ifRules.conditions) return
-    const fieldValue = dotAccess(this.root, ifRules.value)
+    const fieldValue = ifRules.value === '.' ? this.root : dotAccess(this.root, ifRules.value)
     const conditionSet = ifRules.conditions
 
     if (Array.isArray(conditionSet)) {
