@@ -8,7 +8,11 @@ function join(message, values = {}) {
   for (const key in values) {
     let value
     if (key === 'path') {
-      value = serializeDotPath(values[key])
+      if (values[key].length > 0) {
+        value = serializeDotPath(values[key])
+      } else {
+        value = '(root)'
+      }
     } else {
       value = values[key]
     }
