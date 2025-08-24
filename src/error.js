@@ -42,7 +42,7 @@ function resolveUnexpectedKey(array) {
     const unexpectedKey = array[array.length - 1]
     array.pop()
     return {
-      path: serializeDotPath(array),
+      path: array,
       unexpectedKey: unexpectedKey
     }
   }
