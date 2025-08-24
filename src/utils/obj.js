@@ -88,6 +88,7 @@ function dotSplit(path) {
 }
 
 function serializeDotPath(path) {
+  if (!isArray(path)) return path
   return path.reduce((acc, value) => {
     if (isInteger(value)) {
       return `${acc}[${value}]`
