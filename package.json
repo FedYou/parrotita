@@ -1,6 +1,6 @@
 {
   "name": "parrotita",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "JSON validator based on Json Schema but faster and more practical",
   "exports": {
     "import": "./lib/esm.js",
