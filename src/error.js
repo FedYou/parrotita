@@ -150,6 +150,7 @@ function throwError({ schemaIssue = false, targetSchema = undefined, type, path 
     description: targetSchema?.description ?? null,
     examples: targetSchema?.examples ?? null,
     default: targetSchema?.default ?? null,
+    path: serializeDotPath(path),
     type
   }
 
