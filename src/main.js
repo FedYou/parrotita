@@ -164,7 +164,11 @@ class Validator {
 
     if (isObject(targetSchema.items)) {
       input.forEach((item, index) => {
-        this.#valid({ targetSchema: targetSchema.items, input: item, path: `${path}[${index}]` })
+        this.#valid({
+          targetSchema: targetSchema.items,
+          input: item,
+          path: path.concat(index)
+        })
       })
     } else if (isArray(targetSchema.items)) {
       input.forEach((item, index) => {
