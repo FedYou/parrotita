@@ -68,7 +68,7 @@ class UseIf {
     if (condition.elseIf) {
       this.#evaluateCondition(currentValue, condition.elseIf)
     } else if (condition.else) {
-      this.#mergeProperties(condition.addProperties)
+      this.#mergeProperties(condition.else.addProperties)
     }
   }
   #mergeProperties(properties) {
