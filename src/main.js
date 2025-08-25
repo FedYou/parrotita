@@ -273,7 +273,7 @@ class Validator {
         }
       }
 
-      if (valid) return !0
+      if (valid || !type.require) return !0
 
       // <data> Valor invalido en ${path} solo se permiten: ${type.join(', ')}
       throwDataError({ type: 'enum', path, targetSchema: type })
