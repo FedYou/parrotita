@@ -92,7 +92,7 @@ class Validator {
   #root
 
   constructor(schema, root) {
-    this.#schema = schema
+    this.#schema = structuredClone(schema)
     this.#root = root
     this.#init()
   }
