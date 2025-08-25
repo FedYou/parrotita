@@ -281,7 +281,7 @@ class Validator {
   }
 
   #validKeys({ targetSchema, input, path }) {
-    if (targetSchema.additionalProperties && !isObject(targetSchema.properties)) return
+    if (targetSchema.additionalProperties || !isObject(targetSchema.properties)) return
 
     const keysSet = new Set(Object.keys(targetSchema.properties))
 
