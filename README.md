@@ -20,9 +20,24 @@ new Validator(schema, root)
 
 ```
 
-## Syntax
+## Salida del Error
 
-### Complete example
+```json
+{
+  "message": "<message>", // Error message
+  "schemaIssue": false, // If it is a data error or internal schema error
+  "title": null, // <<--
+  "description": null, // <<-- Additional information output
+  "examples": null, // <<--
+  "default": null, // <<--
+  "path": "dates[0]", // Path where the error occurs; the value (root) represents the root of the object
+  "type": "pattern" // Type of error
+}
+```
+
+## Sintaxis
+
+### Ejemplo completo
 
 ```json
 {
@@ -72,6 +87,8 @@ new Validator(schema, root)
 }
 ```
 
+---
+
 ### type
 
 Parrotita supports two syntaxes to improve performance and readability when writing types.
@@ -115,7 +132,7 @@ Accepted types
 
 ---
 
-### requiere (boolean)
+### requiere
 
 If this is set to ‘true’, the field must be completed with the correct value for the type. The default setting is ‘false’.
 
@@ -128,7 +145,22 @@ If this is set to ‘true’, the field must be completed with the correct value
 
 ---
 
-### nullable (boolean)
+## default
+
+Used to declare a default value for a property. The value that can be set to `default` can be anything.
+The default value prevents require from executing an error if the property was not written.
+
+```json
+{
+  "type": "string",
+  "require": true,
+  "default": "<some>"
+}
+```
+
+---
+
+### nullable
 
 If set to ‘true’, the value can also be null. The default value is ‘false’.
 
@@ -152,6 +184,8 @@ Can only be used if the type is a `string`, allows regular expressions to valida
 }
 ```
 
+---
+
 ### minLength, maxLength
 
 They can only be used if the type is a `string`. They allow you to set a minimum and maximum length for the string. Their minimum values are 1; values below this are not allowed.
@@ -163,6 +197,8 @@ They can only be used if the type is a `string`. They allow you to set a minimum
   "maxLength": 10
 }
 ```
+
+---
 
 ### minimum, maximum, exclusiveMinimum, exclusiveMaximum
 
@@ -176,7 +212,7 @@ They can only be used if the type is a `number`. They allow you to set a minimum
 }
 ```
 
-or
+o
 
 ```json
 {
@@ -185,6 +221,8 @@ or
   "exclusiveMaximum": 80
 }
 ```
+
+---
 
 ### items
 
@@ -220,6 +258,8 @@ It can only be used if the type is `array`, allowing the elements of the array t
 }
 ```
 
+---
+
 ### minItems, maxItems
 
 They can only be used if the type is an `array`. They allow the array to have a minimum and maximum number of elements. Their minimum values are 1; values below this are not allowed.
@@ -231,6 +271,8 @@ They can only be used if the type is an `array`. They allow the array to have a 
   "maxItems": 3
 }
 ```
+
+---
 
 ### properties
 
@@ -245,9 +287,11 @@ It can only be used if the type is an `object`, allowing you to validate certain
 }
 ```
 
-### additionalProperties (boolean)
+---
 
-It can only be used if the type is an `object`. If it is set to ‘true’, only values that are in `properties` are allowed, and no additional values are permitted. The default setting is ‘false’.
+### additionalProperties
+
+It can only be used if the type is an `object`. If it is set to ‘true’, only the values in `properties` are allowed, and no additional values are permitted. The default setting is ‘true’.
 
 ```json
 {
@@ -260,6 +304,23 @@ It can only be used if the type is an `object`. If it is set to ‘true’, only
   }
 }
 ```
+
+You can also make additional properties have their own schema; this schema only applies to properties that do not have one.
+
+```json
+{
+  "type": "object",
+  "additionalProperties": "number" // <schema>,
+  "properties": {
+    "name": { // << usa su esquema y no el de additionalProperties
+      // <schema>
+    }
+  }
+}
+
+```
+
+---
 
 ## if
 
@@ -325,7 +386,7 @@ Accepted values for the `operator`:
 
 And the `value` can be any value, but it is needed for the condition to start. This value will be compared with the value of `if.value` using the chosen operator.
 
-And if the condition is not met, you can use `else` and `elseIf`. The latter takes priority if both are written. Each `else` is a condition with an operator and value.
+And if the condition is not met, you can use `else` and `elseIf`. The latter takes priority if both are written. Each `elseIf` is a condition with an operator and value, and each `else` can only use the `addProperties` property for the time being.
 
 ```json
 {
@@ -335,7 +396,7 @@ And if the condition is not met, you can use `else` and `elseIf`. The latter tak
     // properties...
   },
   "else": {
-    // condition
+    // addProperties
   },
   "elseIf": {
     // condition
@@ -352,5 +413,19 @@ Only action that can be taken for now, if a condition is met, is to add new prop
   "addProperties": {
     // properties...
   }
+}
+```
+
+---
+
+### title, description, examples
+
+It has no functional use; it only serves to provide more information when the error occurs.
+
+```json
+{
+  "title": "<title>",
+  "description": "<description>",
+  "examples": ["<example>"]
 }
 ```
