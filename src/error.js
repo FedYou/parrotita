@@ -1,4 +1,4 @@
-import messages from './messages.json' assert { type: 'json' }
+import messages from './messages.json' with { type: 'json' }
 import { serializeDotPath } from './utils/obj.js'
 import _typeof, { isString, isObject, isArray } from './utils/typeof.js'
 
