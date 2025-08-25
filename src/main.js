@@ -5,7 +5,8 @@ import _typeof, {
   isString,
   isNumber,
   isNull,
-  isTypeof
+  isTypeof,
+  isBoolean
 } from './utils/typeof.js'
 import { throwDataError, throwSchemaError } from './error.js'
 import { dotAccess } from './utils/obj.js'
@@ -187,13 +188,37 @@ class Validator {
   #validTypeObject({ targetSchema, input, path }) {
     if (targetSchema.type !== 'object') return
 
+    let allProperties
+    let isAdditionalProperties = false
+
+    const valid = (key, targetSchema) => {
+      this.#valid({
+        targetSchema,
+        input: input[key],
+        path: path.concat(key)
+      })
+    }
+
+    if (
+      targetSchema.additionalProperties !== undefined &&
+      !isBoolean(targetSchema.additionalProperties)
+    ) {
+      allProperties = new Set(Object.keys(input))
+      isAdditionalProperties = true
+    }
+
     if (isObject(targetSchema.properties)) {
       for (const key in targetSchema.properties) {
-        this.#valid({
-          targetSchema: targetSchema.properties[key],
-          input: input[key],
-          path: path.concat(key)
-        })
+        if (isAdditionalProperties) {
+          allProperties.delete(key)
+        }
+        valid(key, targetSchema.properties[key])
+      }
+    }
+
+    if (isAdditionalProperties) {
+      for (const key of allProperties) {
+        valid(key, targetSchema.additionalProperties)
       }
     }
 
